@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import './css/login.css';
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
 
 const Login: React.FC = () => {
     const [formData, setFormData] = useState({ username: '', email: '', password: '', mobileNo: '' });
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
     const [isChecked, setIsChecked] = useState(false);
+
+    const nav =  useNavigate();
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -34,6 +37,7 @@ const Login: React.FC = () => {
         try {
             const response = await axios.post('http://localhost:8080/user/validateLogin', formData);
             setSuccessMessage(response.data);
+            nav('/dashboard')
             setError('');
         } catch (error: any) {
             setError(error.response.data);
